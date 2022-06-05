@@ -2,8 +2,6 @@
 
 This is an alias conversion babel plugin
 
-This is a library that can automatically find and execute corresponding modules according to alias path alias in tsconfig.json
-
 ## Install
 
 install with npm:
@@ -41,4 +39,14 @@ demo(paths is the same as what you normally configure):
 ```
 
 3. file import
+- module test/a.ts
+```ts
+  import b from '@test/b';
+  console.log('module a run success !!!', b);
+```
 
+- module test/b.ts
+```ts
+  console.log('module b run success !!!');
+  export default 1;
+```
