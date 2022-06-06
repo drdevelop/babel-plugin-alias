@@ -58,7 +58,6 @@ class PathHost {
    */
   changeModulePath(fileName: string, aliasPath: string, outputType: 'relative' | 'absolute'): string {
     const absolutePath = this.aliasToAbsolute(aliasPath);
-    // console.log('aliasToAbsolute', fileName, absolutePath, path.isAbsolute(absolutePath));
     if (!path.isAbsolute(absolutePath)) {
       return aliasPath;
     }
@@ -66,7 +65,6 @@ class PathHost {
     if (outputType === 'absolute') {
       replacePath = absolutePath;
     } else if (outputType === 'relative') {
-      // console.log('[absolutePath]', absolutePath)
       replacePath = this.getRelativeBetween2AbsolutePath(fileName, absolutePath);
     }
     return replacePath;
