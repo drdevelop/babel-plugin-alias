@@ -3,16 +3,32 @@
   "version": "1.0.0",
   "description": "This is an alias conversion babel plugin",
   "main": "dist/index.js",
+  "author": "drdevelop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drdevelop/babel-plugin-alias.git"
+  },
+  "keywords": [
+    "babel plugin",
+    "typescript",
+    "import",
+    "module",
+    "alias",
+    "compiler"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drdevelop/babel-plugin-alias/issues"
+  },
+  "homepage": "https://github.com/drdevelop/babel-plugin-alias#readme",
   "scripts": {
     "prepare": "husky install",
     "dev": "babel-node --extensions .ts,.js ./core/index --config-file ./babel.config.js",
     "build": "tsc",
-    "pub": "npm run build && npm publish",
     "prepublishOnly": "npm run test",
+    "pub": "npm run build && npm publish",
     "test": "cross-env NODE_ENV=test jest"
   },
-  "author": "drdevelop",
-  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.17.10",
@@ -40,21 +56,5 @@
     "dist",
     "package.json",
     "yarn.lock"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/drdevelop/babel-plugin-alias.git"
-  },
-  "keywords": [
-    "babel plugin",
-    "typescript",
-    "import",
-    "module",
-    "alias",
-    "compiler"
-  ],
-  "bugs": {
-    "url": "https://github.com/drdevelop/babel-plugin-alias/issues"
-  },
-  "homepage": "https://github.com/drdevelop/babel-plugin-alias#readme"
+  ]
 }
