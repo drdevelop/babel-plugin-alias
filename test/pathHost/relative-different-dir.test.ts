@@ -5,8 +5,8 @@ const tsConfig = require('../tsconfig.json');
 
 const root = '/User/project';
 
-test('alias path to relative path for different begin dir', async () => {
-  const { baseUrl, paths } = await tsConfig.compilerOptions;
+test('alias path to relative path for different begin dir', () => {
+  const { baseUrl, paths } = tsConfig.compilerOptions;
   const pathHost = new PathHost({
     baseUrl: path.join(root, baseUrl),
     paths,
