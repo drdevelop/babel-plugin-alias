@@ -19,13 +19,17 @@ class PathHost {
     return str.replace('*', '');
   }
 
+  minimatch(origin: string, target: string) {
+    target = this.clearAllMatchMark(target);
+    return origin.indexOf(target) === 0;
+  }
+
   aliasToAbsolute(modulePath: string): string {
     const match: { value?: string; mapPath?: string } = {};
     Object.keys(this.aliasMapPaths).forEach(valuePath => {
       if (match.value) return;
-      const regStr = this.getHeadReg(valuePath);
-      const matchModulePath = new RegExp(regStr).exec(modulePath);
-      match.value = matchModulePath && matchModulePath[0];
+      const matched = this.minimatch(modulePath, valuePath);
+      match.value = matched && this.clearAllMatchMark(valuePath);
       if (match.value) {
         match.mapPath = this.clearAllMatchMark(this.aliasMapPaths[valuePath][0]);
       }
