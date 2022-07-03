@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/drdevelop/babel-plugin-alias/compare/v1.1.0...v1.2.0) (2022-07-03)
+
+
+### Features
+
+* support resolve the path of window system ([6cf4444](https://github.com/drdevelop/babel-plugin-alias/commit/6cf44444a04c8b839baac197704a507c07e473c9))
+
 ## 1.1.0 (2022-06-08)
 
 
