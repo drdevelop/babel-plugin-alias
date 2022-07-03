@@ -6,7 +6,8 @@ const root = process.cwd();
 // eslint-disable-next-line
 const tsconfigInfo = require(path.join(root, './tsconfig.json'));
 
-const baseUrl = path.join(root, tsconfigInfo.compilerOptions.baseUrl);
+const setBaseUrl = tsconfigInfo.compilerOptions.baseUrl || './';
+const baseUrl = path.join(root, setBaseUrl);
 const aliasMapPaths = tsconfigInfo.compilerOptions.paths;
 const pathHost = new PathHost({
   baseUrl,
