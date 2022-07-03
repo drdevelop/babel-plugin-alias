@@ -11,8 +11,9 @@ class PathHost {
     this.aliasMapPaths = this.transformConfigPaths(baseUrl, paths);
   }
 
-  getHeadReg(oldRegStr: string): RegExp {
-    return new RegExp(`^(${oldRegStr})`);
+  replaceStart(str: string, replaceStr: string, replaceValue: string) {
+    if (str.indexOf(replaceStr) !== 0) return str;
+    return replaceValue + str.slice(replaceStr.length);
   }
 
   clearAllMatchMark(str: string): string {
@@ -22,6 +23,19 @@ class PathHost {
   minimatch(origin: string, target: string) {
     target = this.clearAllMatchMark(target);
     return origin.indexOf(target) === 0;
+  }
+
+  normalizeSeparator(filePath: string) {
+    const sysSeparator = path.sep;
+    const filePathSeparator = '/';
+    if (sysSeparator === filePathSeparator) return filePath;
+    while (true) {
+      if (!filePath.includes(sysSeparator)) {
+        break;
+      }
+      filePath = filePath.replace(sysSeparator, filePathSeparator);
+    }
+    return filePath;
   }
 
   aliasToAbsolute(modulePath: string): string {
@@ -36,8 +50,10 @@ class PathHost {
     })
 
     if (match.value) {
-      const replaceReg = this.getHeadReg(match.value);
-      return path.join(match.mapPath, modulePath.replace(replaceReg, ''));
+      return path.join(
+        match.mapPath,
+        this.replaceStart(modulePath, match.value, '')
+      );
     }
     return modulePath;
   }
@@ -75,6 +91,7 @@ class PathHost {
   }
 
   getRelativeBetween2AbsolutePath(fileName: string, importPath: string): string {
+    // console.log('getRelativeBetween2AbsolutePath', fileName, importPath);
     const currDir = path.dirname(fileName);
     // console.log('currdir', currDir, importPath);
     const strHeap = currDir.split('');
@@ -87,25 +104,30 @@ class PathHost {
         break;
       }
     }
+    // The path separator of window system is\, need according to different systems to split
+    // Mac os is /, window is \
+    const sysSeparator = path.sep;
     const oldMatchDir = currDir.slice(0, end + 1);
-    const realMatchDir = oldMatchDir.split('/').slice(0, -1).join('/') + '/';
+    const realMatchDir = oldMatchDir.split(sysSeparator).slice(0, -1).join(sysSeparator) + sysSeparator;
     // console.log('matchdir', oldMatchDir, realMatchDir, currDir)
     if (end === currDir.length - 1) {
       // The path to be imported is in the current directory
-      return importPath.replace(this.getHeadReg(currDir), '.');
+      return this.normalizeSeparator(
+        this.replaceStart(importPath, currDir, '.')
+      );
     } else {
       // The path to be imported is out the current directory
-      // The path separator of window system is\, need according to different systems to split
-      // Mac os is /, window is \
-      const replacedMatchPart = fileName.replace(this.getHeadReg(realMatchDir), '');
+      const replacedMatchPart = this.replaceStart(fileName, realMatchDir, '');
       // If go out, real layers show be reduced 1
-      const goOutLayers = replacedMatchPart.split('/').length - 1;
+      const goOutLayers = replacedMatchPart.split(sysSeparator).length - 1;
       let layersStr = '';
       for (let i = 0; i < goOutLayers; i++) {
         layersStr += '../';
       }
       // clear tail separator
-      return layersStr + importPath.replace(this.getHeadReg(realMatchDir), '');
+      return layersStr + this.normalizeSeparator(
+        this.replaceStart(importPath, realMatchDir, '')
+      );
     }
   }
 }
